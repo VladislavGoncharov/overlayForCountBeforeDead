@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style th:inline="css">
+        @import url([(${font.fontAddress})]);
+        :root {
+            --bs-font-sans-serif: [(${font.fontName})];
+        }
+    </style>
+    <title>Title</title>
+</head>
+<body>
+<div class="hidden" th:insert="fragments/nav :: nav"></div>
+<div class="container w-75">
+    <table class="table" style="text-align: center; margin: auto;vertical-align: middle">
+        <thead>
+        <tr>
+            <td class="fs-3" colspan="4">
+                Настройки админа
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a class="btn btn-outline-danger" th:href="@{/admin/settings/map-picture}">Загрузка карт</a>
+            </td>
+            <td>
+                <a class="btn btn-outline-danger" th:href="@{/admin/settings/font}">Загрузка шрифтов</a>
+            </td>
+            <td>
+                <a class="btn btn-outline-danger" th:href="@{/admin/settings/audio}">Загрузка музыки</a>
+            </td>
+            <td>
+                <a class="btn btn-outline-danger" onclick="resetSelectedMap()">Сброс баннов карт</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a class="btn btn-outline-danger"
+                   th:href="@{/admin/settings/others-pictures}">Загрузка других картинок</a>
+            </td>
+            <td>
+                Временная отсечка на аудио
+            </td>
+            <td>
+                <input class="form-control" id="timeCutoffInput" type="number" min="1000" max="15000"
+                       th:value="${timeCutoff}">
+            </td>
+            <td>
+                <button class="btn btn-outline-danger width-reset-time" type="button"
+                        onclick="updateTimeCutoff()" onfocus="blur()">
+                    <svg style="vertical-align: baseline" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                    </svg>
+                </button>
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="4">
+                Игроки с секундомером
+            </td>
+        </tr>
+        <tr th:each="player,stat : ${players}">
+            <td>
+                <input class="form-control" th:id="'inputForPlayer' + ${player.id}" type="text"
+                       th:value="${player.nickname}">
+            </td>
+            <td>
+                <button class="btn btn-outline-danger width-reset-time" type="button"
+                        th:onclick="'updateNickname(' + ${player.id} + ')'" onfocus="blur()">
+                    <svg style="vertical-align: baseline" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                    </svg>
+                </button>
+            </td>
+            <td th:text="${player.time}">
+            </td>
+            <td>
+                <button th:id="${'button reset time ' + player.id}" class="btn btn-outline-danger" type="button"
+                        th:onclick="'resetTime(' + ${player.id} + ')'">
+                    Обнулить
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                Все пользователи
+            </td>
+        </tr>
+        <tr th:each="user,stat : ${users}">
+            <th:block th:switch="${user.role.name()}">
+                <th:block th:case="'ADMIN'">
+                    <td>
+                        <input class="form-control" th:id="'inputForUserUsername' + ${user.id}" type="text"
+                               th:value="${user.username}">
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-danger width-reset-time" type="button"
+                                th:onclick="'updateUserUsername(' + ${user.id} + ')'" onfocus="blur()">
+                            <svg style="vertical-align: baseline" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                            </svg>
+                        </button>
+                    </td>
+                    <td>
+                        <input class="form-control"
+                               th:id="'inputForUserPassword' + ${user.id}" type="password"
+                               th:value="${user.password}">
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-danger width-reset-time" type="button"
+                                th:onclick="'updateUserPassword(' + ${user.id} + ')'" onfocus="blur()">
+                            <svg style="vertical-align: baseline" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                            </svg>
+                        </button>
+                    </td>
+                </th:block>
+                <th:block th:case="*" >
+                    <td th:text="${user.username}"></td>
+                    <td>
+                        <input class="form-control"
+                               th:id="'inputForUserPassword' + ${user.id}" type="password"
+                               th:value="${user.password}" disabled>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-danger width-reset-time" type="button"
+                                th:onclick="'randomPassword(' + ${user.id} + ')'" onfocus="blur()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+                            </svg>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-danger width-reset-time" type="button"
+                                th:onclick="[('copyText(' + ${user.id} +  ')')]" onfocus="blur()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                                <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                            </svg>
+                        </button>
+                    </td>
+                </th:block>
+            </th:block>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript" th:src="@{/js/settings.js}"></script>
+</body>
+</html>

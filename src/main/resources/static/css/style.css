@@ -1,0 +1,16 @@
+.hidden {
+    opacity: 0;
+    transition-duration: 0.5s;
+}
+
+.hidden:hover {
+    opacity: 1;
+}
+
+html, body, .backgroundTransparent {
+    background: transparent;
+}
+
+.width-reset-time {
+    width: 6vw;
+}

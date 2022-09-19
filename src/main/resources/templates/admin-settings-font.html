@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style th:inline="css">
+        @import url([(${font.fontAddress})]);
+        :root {
+            --bs-font-sans-serif: [(${font.fontName})];
+        }
+    </style>
+    <title>Title</title>
+</head>
+<body>
+<div class="navHidden" th:insert="fragments/nav :: nav"></div>
+<div class="container w-75">
+    <table class="table" style="text-align: center; margin: auto;vertical-align: middle">
+        <thead>
+        <tr>
+            <td class="fs-4" colspan="7">
+                <p>Это просто пример текста</p>
+                <p>This is just an example of the text</p>
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="font : ${allFont}">
+            <td class="fs-5">
+                <label th:for="${'input_link' + font.id}"> Ссылка
+                </label>
+            </td>
+            <td colspan="2">
+                <input class="form-control" type="text" th:id="${'input_link' + font.id}"
+                       th:value="${font.fontAddress}">
+            </td>
+            <td class="fs-5">
+                <label th:for="${'input_name' + font.id}"> Имя
+                </label>
+            </td>
+            <td>
+                <input class="form-control" type="text" th:id="${'input_name' + font.id}"
+                       th:value="${font.fontName}">
+            </td>
+            <td class="fs-5">
+                <label th:for="${'input_color' + font.id}"> Цвет
+                </label>
+            </td>
+            <td>
+                <input class="form-control" type="text" th:id="${'input_color' + font.id}"
+                       th:value="${font.color}">
+            </td>
+            <td class="fs-5">
+                <button th:onclick="'saveFont(' + ${font.id} + ')'" class="btn btn-outline-danger btn-sm">Загрузить</button>
+            </td>
+        </tr>
+        <tr>
+            <td id="number" colspan="7" class="font_numbers fs-4" >
+                <p>
+                    0,1,2,3,4,5,6,7,8,9
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td class="fs-5" colspan="2">
+                Напоминание:
+            </td>
+            <td class="fs-5" colspan="3">
+                <img style="height:20vw" th:src="@{/image/info/info_font.png}">
+            </td>
+            <td class="fs-5" colspan="2">
+                <a class="btn btn-outline-danger" href="https://fonts.google.com/">Гугл шрифты</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript" th:src="@{/js/font.js}"></script>
+</body>
+</html>

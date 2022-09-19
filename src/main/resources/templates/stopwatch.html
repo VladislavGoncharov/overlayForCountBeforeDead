@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style th:inline="css">
+        @import url([(${font.fontAddress})]);
+        :root {
+            --bs-font-sans-serif: [(${font.fontName})];
+        }
+    </style>
+    <title>Title</title>
+</head>
+<body>
+<audio id="audio" type="audio/mpeg" th:src="@{{audioPath} (audioPath=${audioPath})}"
+       preload="auto"></audio>
+<div class="hidden" th:insert="fragments/nav :: nav"></div>
+<div class="container w-100" id="container">
+    <table th:style="'position: fixed; top: 32vh; left: 4vw;text-align: center;color:' + ${font.color} + ';'">
+        <tr th:each="player,stat : ${players}">
+            <td th:id="${'player_nickname_id_' + player.id}" th:text="${player.nickname}"></td>
+            <td th:text="' - '"></td>
+            <td th:id="${'player_time_id_' + player.id}" th:text="${player.time}"></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <img style="max-width:15vw;position: relative;top: -4.9vw;z-index: -1"
+                     th:src="@{{img} (img = ${imgUnderNickname})}">
+            </td>
+        </tr>
+    </table>
+    <div style="position: fixed; right: 4vw; top: 64vh">
+        <table style="text-align: center">
+
+            <thead>
+            <tr id="number">
+                <td></td>
+                <td style=";font-size: 50px" id="second">00</td>
+                <td>:</td>
+                <td style=";font-size: 50px" id="millisecond">00</td>
+            </tr>
+            </thead>
+            <tbody sec:authorize="hasAuthority('ADMIN')"  class="hidden">
+            <tr>
+                <td>
+                    <button class="btn btn-sm btn-outline-warning" id="button stop confirmation" style="display: none"
+                            type="button">Подтвердить
+                    </button>
+                </td>
+                <td>
+                    <div class="d-grid" style="min-width: 80px">
+                        <button class="btn btn-sm btn-outline-danger" id="button stop" type="button">Стоп</button>
+                    </div>
+                </td>
+                <td></td>
+                <td>
+                    <div class="d-grid" style="min-width: 80px">
+                        <button class="btn btn-sm btn-outline-success" id="button start" type="button">Старт</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="3">
+                    <div class="d-grid" style="min-width: 80px">
+                        <button class="btn btn-sm btn-outline-primary" id="button reset" type="button">Сбросить</button>
+                    </div>
+                </td>
+            </tr>
+            <tr th:id="${'button send result player ' + player.id}" th:each="player : ${players}" style="display: none">
+                <td></td>
+                <td colspan="3">
+                    <div class="d-grid">
+                        <button class="btn btn-sm btn-outline-warning" th:onclick="'sendResultPlayer(' + ${player.id} + ')'" th:text="${player.nickname}"></button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+           </table>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/js/font.js}"></script>
+<script sec:authorize="!hasAuthority('ADMIN')" type="text/javascript" th:src="@{/js/stopwatchForAll.js}"></script>
+<script sec:authorize="hasAuthority('ADMIN')" type="text/javascript" th:src="@{/js/stopwatch.js}"></script>
+<script type="text/javascript" th:src="@{/js/updateDataStopwatch.js}"></script>
+</body>
+</html>

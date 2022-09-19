@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style th:inline="css">
+        @import url([(${font.fontAddress})]);
+        :root {
+            --bs-font-sans-serif: [(${font.fontName})];
+        }
+    </style>    <title>Title</title>
+</head>
+<body>
+<div class="hidden" th:insert="fragments/nav :: nav"></div>
+<div class="container w-75" style="padding: 12vh 0">
+    <div class="row row-cols-auto justify-content-around gap-5" style="margin: auto; padding: 5px">
+        <div class="col" style="padding: 0" th:each="map,stat : ${maps}">
+            <div th:id="'divSelect' + ${stat.index}" class="card backgroundTransparent"
+                 style="border: transparent;transition-duration: 1.5s;">
+                <img class="card-img" style="width: 15vw"
+                     th:src="@{{img} (img=${map.addressMapPicture})}"
+                     alt="map" src="#">
+
+                <h5 class="card-title" th:text="${map.nameMap}" style="text-align: center"></h5>
+                <th:block sec:authorize="isAuthenticated()">
+                    <a th:onclick="[(${'selectMap(' + map.id + ', '+ user.id + ' ) '})]" style="height: 0;">
+                    <span th:id="${'map select ' + stat.index}"
+                          th:style="'height: 0;transition-duration: 1s;' + ${map.getSelectedStyle()}">
+                         <img style="width:15vw;position: relative;top: -13vw"
+                              th:src="@{/image/selected/selected-map.png}">
+                    </span>
+                    </a>
+                </th:block>
+                <th:block sec:authorize="isAnonymous()">
+                    <span th:id="${'map select ' + stat.index}"
+                          th:style="'height: 0;transition-duration: 1s;' + ${map.getSelectedStyle()}">
+                         <img style="width:15vw;position: relative;top: -13vw"
+                              th:src="@{/image/selected/selected-map.png}">
+                    </span>
+                </th:block>
+
+                <h5 th:id="${'map select player name ' + stat.index}"
+                    class="card-title" th:text="${map.nameOfPlayerWhoChose}"
+                    th:style="'transition-duration: 1s;text-align: center;' + ${map.getSelectedStyle()}"></h5>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/js/selectMap.js}"></script>
+
+</body>
+</html>

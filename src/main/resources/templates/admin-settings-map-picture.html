@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style th:inline="css">
+        @import url([(${font.fontAddress})]);
+        :root {
+            --bs-font-sans-serif: [(${font.fontName})];
+        }
+    </style>
+    <title>Title</title>
+</head>
+<body>
+<div class="navHidden" th:insert="fragments/nav :: nav"></div>
+<div class="container w-75">
+    <form action="#" th:action="@{/admin/settings/map-picture/save}"
+          th:object="${newMap}" method="post" enctype="multipart/form-data">
+
+        <table class="table" style="text-align: center; margin: auto">
+            <tbody>
+            <tr th:if="${error!=null}">
+                <td colspan="5">
+                    <div class="alert alert-danger text-center" role="alert" style="margin: 5px 70px;"
+                         th:text="${error}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="fs-3" colspan="5">
+                    Загрузка карты
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Картинка карты:
+                </td>
+                <td>
+                    <input class="form-control form-control-sm" type="file" th:name="saveMapPicture">
+                </td>
+                <td>
+                    Название карты:
+                </td>
+                <td>
+                    <input class="form-control form-control-sm" type="text" th:field="*{nameMap}">
+                </td>
+                <td>
+                    <button id="input_upload" type="submit" hidden></button>
+                    <label class="btn btn-outline-danger" for="input_upload"> Загрузить
+                    </label>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </form>
+    <table class="table" style="text-align: center; margin: auto">
+        <thead>
+        <tr>
+            <td>
+                Номер
+            </td>
+            <td>
+                Картинка карты
+            </td>
+            <td>
+                Название карты
+            </td>
+            <td>
+                Удалить
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="map,stat : ${mapPictures}">
+            <td th:text="${stat.count}"></td>
+            <td><img style="height:3vw"
+                     th:src="@{{img} (img=${map.addressMapPicture})}"
+                     th:alt="${map.addressMapPicture}"></td>
+            <td th:text="${map.nameMap}"></td>
+            <td>
+                <a class="btn btn-outline-warning"
+                   th:href="@{/admin/settings/map-picture/delete-map-picture-{id} (id=${map.id})}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-eraser" viewBox="0 0 16 16">
+                        <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/>
+                    </svg>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

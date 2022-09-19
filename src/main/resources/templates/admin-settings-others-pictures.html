@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style th:inline="css">
+        @import url([(${font.fontAddress})]);
+        :root {
+            --bs-font-sans-serif: [(${font.fontName})];
+        }
+    </style>
+    <title>Title</title>
+</head>
+<body>
+<div class="navHidden" th:insert="fragments/nav :: nav"></div>
+<div class="container w-75">
+    <form action="#" th:action="@{/admin/settings/others-pictures/save}"
+          th:object="${newPicture}" method="post" enctype="multipart/form-data">
+
+        <table class="table" style="text-align: center; margin: auto;vertical-align: middle">
+            <tbody>
+            <tr th:if="${error!=null}">
+                <td colspan="2">
+                    <div class="alert alert-danger text-center" role="alert" style="margin: 5px 70px;"
+                         th:text="${error}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="fs-3" colspan="2">
+                    Картинка под никнеймами
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input class="form-control form-control-sm" type="file" th:name="saveOthersPictures">
+                </td>
+                <td>
+                    <button id="input_upload" type="submit" hidden></button>
+                    <label class="btn btn-outline-danger" for="input_upload"> Загрузить
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img style="height:5vw"
+                         th:src="@{{img} (img = ${othersPictures.get(0)})}">
+                </td>
+                <td>
+                    Рекомендуемое соотношение сторон 1 : 2.5
+                </td>
+            </tr>
+            <tr>
+                <td class="fs-3" colspan="2">
+                    Картинка под выбором карт
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input class="form-control form-control-sm" type="file" th:name="saveSelectMapPicture">
+                </td>
+                <td>
+                    <button id="input_upload_select_map" type="submit" hidden></button>
+                    <label class="btn btn-outline-danger" for="input_upload_select_map"> Загрузить
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img style="height:3vw"
+                         th:src="@{{img} (img = ${othersPictures.get(1)})}">
+                </td>
+                <td>
+                    Рекомендуемое соотношение сторон 1 : 2.5
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+</html>

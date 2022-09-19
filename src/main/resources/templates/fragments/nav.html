@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+<nav th:fragment="nav" class="navbar navbar-expand justify-content-md-end gap-4 ">
+
+    <th:block th:if="${#httpServletRequest.getRequestURI().equals('/')}">
+        <button sec:authorize="hasAuthority('ADMIN')" id="button hide" style="display: none"
+                class="btn btn-outline-light" onclick="switcherOverlay()">Скрыть
+        </button>
+        <button sec:authorize="hasAuthority('ADMIN')" id="button show"
+                class="btn btn-outline-light" onclick="switcherOverlay()">Показать
+        </button>
+    </th:block>
+
+
+
+    <a sec:authorize="isAuthenticated()"
+       class="btn btn-outline-light" th:href="@{/}">Главная</a>
+    <a sec:authorize="isAuthenticated()"
+       class="btn btn-outline-light" th:href="@{/switch-map}">Выбор карты</a>
+
+    <a sec:authorize="hasAuthority('ADMIN')"
+       class="btn btn-outline-light" th:href="@{/admin/settings}">Настройки</a>
+
+    <a sec:authorize="isAnonymous()"
+       class="btn btn-outline-light " th:href="@{/login}">Войти</a>
+    <a sec:authorize="isAuthenticated()"
+       class="btn btn-outline-light" th:href="@{/logout}">Выйти</a>
+
+</nav>
+</body>
+</html>
