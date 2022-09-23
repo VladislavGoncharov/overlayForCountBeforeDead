@@ -76,7 +76,7 @@ function copyText(userId){
 
 function updateTimeCutoff(){
     let time = document.getElementById('timeCutoffInput');
-    if (2000 <= time.value && time.value <= 15000 ) {
+    if (1000 <= time.value && time.value <= 15000 ) {
         $.ajax({
             type: 'POST',
             url: 'settings/timeCutoff=' + time.value,
@@ -84,5 +84,5 @@ function updateTimeCutoff(){
         });
         setTimeout(() => location.reload(),10)
     }
-    else alert('Значение должно быть от 2000 до 15000')
+    else alert('Значение должно быть от 1000 до 15000')
 }

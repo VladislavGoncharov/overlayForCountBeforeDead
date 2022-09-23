@@ -23,11 +23,7 @@ public interface PictureService {
 
     boolean isResetMap();
 
-    List<String> getOthersPictures();
-
-    void saveOthersPictures(MultipartFile othersPictures) throws IOException;
-
-    void saveSelectMapPicture(MultipartFile selectMapPicture) throws IOException;
+    void saveOthersPictures(Integer idPicture, MultipartFile othersPictures) throws IOException;
 
 }
 

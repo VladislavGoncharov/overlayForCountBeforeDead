@@ -17,7 +17,12 @@
     </style>    <title>Title</title>
 </head>
 <body>
+<div style="display: flex">
+    <img style="width:100%;position: fixed;z-index: -1"
+         th:src="@{{img} (img = ${imgUnderSelectMap})}">
+</div>
 <div class="hidden" th:insert="fragments/nav :: nav"></div>
+
 <div class="container w-75" style="padding: 12vh 0">
     <div class="row row-cols-auto justify-content-around gap-5" style="margin: auto; padding: 5px">
         <div class="col" style="padding: 0" th:each="map,stat : ${maps}">
@@ -27,7 +32,9 @@
                      th:src="@{{img} (img=${map.addressMapPicture})}"
                      alt="map" src="#">
 
-                <h5 class="card-title" th:text="${map.nameMap}" style="text-align: center"></h5>
+                <h5 class="card-title" th:text="${map.nameMap}"
+                    style="text-align: center;
+                    text-shadow: 2px 2px 2px white,-2px -2px 2px white,-2px 2px 2px white,2px -2px 2px white;"></h5>
                 <th:block sec:authorize="isAuthenticated()">
                     <a th:onclick="[(${'selectMap(' + map.id + ', '+ user.id + ' ) '})]" style="height: 0;">
                     <span th:id="${'map select ' + stat.index}"
@@ -47,7 +54,8 @@
 
                 <h5 th:id="${'map select player name ' + stat.index}"
                     class="card-title" th:text="${map.nameOfPlayerWhoChose}"
-                    th:style="'transition-duration: 1s;text-align: center;' + ${map.getSelectedStyle()}"></h5>
+                    th:style="'transition-duration: 1s;text-align: center;' + ${map.getSelectedStyle()} +
+                    ';text-shadow: 2px 2px 2px white,-2px -2px 2px white,-2px 2px 2px white,2px -2px 2px white;'"></h5>
             </div>
         </div>
     </div>

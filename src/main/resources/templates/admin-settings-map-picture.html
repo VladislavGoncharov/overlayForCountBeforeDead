@@ -23,7 +23,7 @@
     <form action="#" th:action="@{/admin/settings/map-picture/save}"
           th:object="${newMap}" method="post" enctype="multipart/form-data">
 
-        <table class="table" style="text-align: center; margin: auto">
+        <table class="table" style="text-align: center; margin: auto;vertical-align: middle">
             <tbody>
             <tr th:if="${error!=null}">
                 <td colspan="5">
@@ -34,6 +34,11 @@
             <tr>
                 <td class="fs-3" colspan="5">
                     Загрузка карты
+                </td>
+            </tr>
+            <tr>
+                <td class="fs-6" colspan="5">
+                    Рекомендуется загружать карты соотношением сторон 16:9
                 </td>
             </tr>
             <tr>
@@ -59,7 +64,7 @@
 
         </table>
     </form>
-    <table class="table" style="text-align: center; margin: auto">
+    <table class="table" style="text-align: center; margin: auto;vertical-align: middle">
         <thead>
         <tr>
             <td>

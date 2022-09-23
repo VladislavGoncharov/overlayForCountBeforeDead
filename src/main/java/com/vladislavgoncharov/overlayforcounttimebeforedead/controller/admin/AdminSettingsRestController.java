@@ -5,6 +5,7 @@ import com.vladislavgoncharov.overlayforcounttimebeforedead.service.FontService;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.service.PictureService;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.service.PlayerService;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.service.UserService;
+import com.vladislavgoncharov.overlayforcounttimebeforedead.util.ImgUnderText;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.util.TimeCutoffOnAudio;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +60,7 @@ public class AdminSettingsRestController {
 
     @PostMapping("/get-user-data-by-id-{id}")
     public ResponseEntity<String> getUserData(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(userService.getUserDataById(id),HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserDataById(id), HttpStatus.OK);
     }
 
     @PostMapping(value = "/font/save-font")
@@ -71,9 +72,20 @@ public class AdminSettingsRestController {
     public ResponseEntity<String[]> getFontNumbers() {
         return new ResponseEntity<>(fontService.getNumbersFont(), HttpStatus.OK);
     }
+
     @PostMapping(value = "/timeCutoff={time}")
     public void setTimeCutoff(@PathVariable int time) {
         TimeCutoffOnAudio.setTimeCutoff(time);
+    }
+
+    @PostMapping(value = "/others-pictures/saveOffsetNickname={offset}")
+    public void setOffsetImgPicturesNickname(@PathVariable String offset) {
+        ImgUnderText.setOffsetImgUnderNickname(offset);
+    }
+
+    @PostMapping(value = "/others-pictures/saveOffsetStopwatch={offset}")
+    public void setOffsetImgPictureStopwatch(@PathVariable String offset) {
+        ImgUnderText.setOffsetImgUnderStopwatch(offset);
     }
 
 

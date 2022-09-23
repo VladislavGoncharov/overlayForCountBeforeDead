@@ -20,68 +20,115 @@
 <body>
 <div class="navHidden" th:insert="fragments/nav :: nav"></div>
 <div class="container w-75">
-    <form action="#" th:action="@{/admin/settings/others-pictures/save}"
-          th:object="${newPicture}" method="post" enctype="multipart/form-data">
 
-        <table class="table" style="text-align: center; margin: auto;vertical-align: middle">
-            <tbody>
-            <tr th:if="${error!=null}">
+
+    <table class="table" style="text-align: center; margin: auto;vertical-align: middle">
+        <tbody>
+        <tr th:if="${error!=null}">
+            <td colspan="4">
+                <div class="alert alert-danger text-center" role="alert" style="margin: 5px 70px;"
+                     th:text="${error}"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="fs-3" colspan="4">
+                Картинка под никнеймами
+            </td>
+        </tr>
+        <tr>
+            <form action="#" th:action="@{/admin/settings/others-pictures/save=1}"
+                  th:object="${newPicture}" method="post" enctype="multipart/form-data">
+                <td>
+                    <input class="form-control form-control-sm" type="file" th:name="picture">
+                </td>
+                <td>
+                    <button id="input_upload_1" type="submit" hidden></button>
+                    <label class="btn btn-outline-danger" for="input_upload_1"> Загрузить
+                    </label>
+                </td>
+            </form>
+            <td>
+                <input id="offsetImgUnderNicknameInput"
+                       class="form-control form-control-sm" type="text" th:value="${imgUnderNickname[1]}">
+            </td>
+            <td>
+                <button class="btn btn-outline-danger" onclick="setOffsetImgPicturesNickname()">Сохранить</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <img style="height:4vw"
+                     th:src="@{{img} (img = ${imgUnderNickname[0]})}">
+            </td>
+            <td colspan="2">
+                Рекомендуемое соотношение сторон 1 : 2.5
+            </td>
+        </tr>
+        <tr>
+            <td class="fs-3" colspan="4">
+                Картинка под секундомером
+            </td>
+        </tr>
+        <tr>
+            <form action="#" th:action="@{/admin/settings/others-pictures/save=2}"
+                  th:object="${newPicture}" method="post" enctype="multipart/form-data">
+                <td>
+                    <input class="form-control form-control-sm" type="file" th:name="picture">
+                </td>
+                <td>
+                    <button id="input_upload_2" type="submit" hidden></button>
+                    <label class="btn btn-outline-danger" for="input_upload_2"> Загрузить
+                    </label>
+                </td>
+            </form>
+            <td>
+                <input id="offsetImgUnderStopwatchInput"
+                       class="form-control form-control-sm" type="text" th:value="${imgUnderStopwatch[1]}">
+            </td>
+            <td>
+                <button class="btn btn-outline-danger" onclick="setOffsetImgPicturesStopwatch()">Сохранить</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <img style="height:4vw"
+                     th:src="@{{img} (img = ${imgUnderStopwatch[0]})}">
+            </td>
+            <td colspan="2">
+                Рекомендуемое соотношение сторон 1 : 2.5
+            </td>
+        </tr>
+        <tr>
+            <td class="fs-3" colspan="4">
+                Картинка под выбором карт
+            </td>
+        </tr>
+        <tr>
+            <form action="#" th:action="@{/admin/settings/others-pictures/save=3}"
+                  th:object="${newPicture}" method="post" enctype="multipart/form-data">
                 <td colspan="2">
-                    <div class="alert alert-danger text-center" role="alert" style="margin: 5px 70px;"
-                         th:text="${error}"></div>
+                    <input class="form-control form-control-sm" type="file" th:name="picture">
                 </td>
-            </tr>
-            <tr>
-                <td class="fs-3" colspan="2">
-                    Картинка под никнеймами
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input class="form-control form-control-sm" type="file" th:name="saveOthersPictures">
-                </td>
-                <td>
-                    <button id="input_upload" type="submit" hidden></button>
-                    <label class="btn btn-outline-danger" for="input_upload"> Загрузить
+                <td colspan="2">
+                    <button id="input_upload_3" type="submit" hidden></button>
+                    <label class="btn btn-outline-danger" for="input_upload_3"> Загрузить
                     </label>
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    <img style="height:5vw"
-                         th:src="@{{img} (img = ${othersPictures.get(0)})}">
-                </td>
-                <td>
-                    Рекомендуемое соотношение сторон 1 : 2.5
-                </td>
-            </tr>
-            <tr>
-                <td class="fs-3" colspan="2">
-                    Картинка под выбором карт
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input class="form-control form-control-sm" type="file" th:name="saveSelectMapPicture">
-                </td>
-                <td>
-                    <button id="input_upload_select_map" type="submit" hidden></button>
-                    <label class="btn btn-outline-danger" for="input_upload_select_map"> Загрузить
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img style="height:3vw"
-                         th:src="@{{img} (img = ${othersPictures.get(1)})}">
-                </td>
-                <td>
-                    Рекомендуемое соотношение сторон 1 : 2.5
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </form>
+            </form>
+
+        </tr>
+        <tr>
+            <td colspan="2">
+                <img style="height:4vw"
+                     th:src="@{{img} (img = ${imgUnderSelectMap})}">
+            </td>
+            <td colspan="2">
+                Рекомендуемое соотношение сторон 16 : 9 (Full HD)
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
+<script type="text/javascript" th:src="@{/js/settingOthersPictures.js}"></script>
 </html>

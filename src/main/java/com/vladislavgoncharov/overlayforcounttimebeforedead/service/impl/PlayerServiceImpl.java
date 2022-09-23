@@ -35,10 +35,10 @@ public class PlayerServiceImpl implements PlayerService {
             millisecondInt = millisecondInt - 100;
             secondInt++;
         }
-        if (secondInt < 9) second = "0" + secondInt;
+        if (secondInt < 10) second = "0" + secondInt;
         else second = String.valueOf(secondInt);
 
-        if (millisecondInt < 9) millisecond = "0" + millisecondInt;
+        if (millisecondInt < 10) millisecond = "0" + millisecondInt;
         else millisecond = String.valueOf(millisecondInt);
 
         player.setTime(second + ":" + millisecond);

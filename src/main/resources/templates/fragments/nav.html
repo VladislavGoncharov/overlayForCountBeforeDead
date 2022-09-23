@@ -15,16 +15,17 @@
 
 
 
-    <a sec:authorize="isAuthenticated()"
-       class="btn btn-outline-light" th:href="@{/}">Главная</a>
-    <a sec:authorize="isAuthenticated()"
-       class="btn btn-outline-light" th:href="@{/switch-map}">Выбор карты</a>
+    <a  th:if="${not #httpServletRequest.getRequestURI().equals('/')}"
+        class="btn btn-outline-light" th:href="@{/}">Главная</a>
+
+    <a class="btn btn-outline-light" th:href="@{/switch-map}">Пик карт</a>
 
     <a sec:authorize="hasAuthority('ADMIN')"
        class="btn btn-outline-light" th:href="@{/admin/settings}">Настройки</a>
 
     <a sec:authorize="isAnonymous()"
        class="btn btn-outline-light " th:href="@{/login}">Войти</a>
+
     <a sec:authorize="isAuthenticated()"
        class="btn btn-outline-light" th:href="@{/logout}">Выйти</a>
 

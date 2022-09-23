@@ -46,7 +46,7 @@
                 <a class="btn btn-outline-danger"
                    th:href="@{/admin/settings/others-pictures}">Загрузка других картинок</a>
             </td>
-            <td>
+            <td style="vertical-align: middle">
                 Временная отсечка на аудио
             </td>
             <td>
@@ -126,7 +126,7 @@
                     </td>
                 </th:block>
                 <th:block th:case="*" >
-                    <td th:text="${user.username}"></td>
+                    <td style="text-align: left" th:text="${user.username}"></td>
                     <td>
                         <input class="form-control"
                                th:id="'inputForUserPassword' + ${user.id}" type="password"

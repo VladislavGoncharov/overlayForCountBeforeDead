@@ -6,6 +6,7 @@ import com.vladislavgoncharov.overlayforcounttimebeforedead.service.PictureServi
 import com.vladislavgoncharov.overlayforcounttimebeforedead.service.PlayerService;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.service.UserService;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.util.AudioUpdate;
+import com.vladislavgoncharov.overlayforcounttimebeforedead.util.ImgUnderText;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.util.TimeCutoffOnAudio;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -75,22 +76,26 @@ public class AdminSettingsController {
     @RequestMapping("/others-pictures")
     public String othersPicturesSetting(Model model) {
         model.addAttribute("font", fontService.getMainFont());
-        model.addAttribute("othersPictures", pictureService.getOthersPictures());
         model.addAttribute("newPicture", new MapPictureDTO());
+        model.addAttribute("imgUnderNickname", ImgUnderText.getAddressImgUnderNumber());
+        model.addAttribute("imgUnderStopwatch", ImgUnderText.getAddressImgUnderStopwatch());
+        model.addAttribute("imgUnderSelectMap", ImgUnderText.getAddressImgUnderSelectMap());
         return "admin-settings-others-pictures";
     }
 
-    @PostMapping("/others-pictures/save")
-    public String saveOthersPictures(@RequestParam("saveOthersPictures") MultipartFile othersPictures,
-                                     @RequestParam("saveSelectMapPicture") MultipartFile selectMapPicture, Model model) {
+    @PostMapping("/others-pictures/save={idPicture}")
+    public String saveOthersPictures(@PathVariable Integer idPicture,
+                                     @RequestParam("picture") MultipartFile picture,
+                                     Model model) {
         try {
-            if (othersPictures != null) pictureService.saveOthersPictures(othersPictures);
-            else pictureService.saveSelectMapPicture(selectMapPicture);
+            pictureService.saveOthersPictures(idPicture,picture);
         } catch (IOException e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("font", fontService.getMainFont());
-            model.addAttribute("othersPictures", pictureService.getOthersPictures());
             model.addAttribute("newPicture", new MapPictureDTO());
+            model.addAttribute("imgUnderNickname", ImgUnderText.getAddressImgUnderNumber());
+            model.addAttribute("imgUnderStopwatch", ImgUnderText.getAddressImgUnderStopwatch());
+            model.addAttribute("imgUnderSelectMap", ImgUnderText.getAddressImgUnderSelectMap());
         }
 
         return "redirect:/admin/settings/others-pictures";

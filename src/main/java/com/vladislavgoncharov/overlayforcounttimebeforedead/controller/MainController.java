@@ -5,7 +5,7 @@ import com.vladislavgoncharov.overlayforcounttimebeforedead.service.PictureServi
 import com.vladislavgoncharov.overlayforcounttimebeforedead.service.PlayerService;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.service.UserService;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.util.AudioUpdate;
-import com.vladislavgoncharov.overlayforcounttimebeforedead.util.ImgUnderNickname;
+import com.vladislavgoncharov.overlayforcounttimebeforedead.util.ImgUnderText;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +32,8 @@ public class MainController {
         model.addAttribute("players", playerService.findAll());
         model.addAttribute("audioPath", AudioUpdate.audioName);
         model.addAttribute("font", fontService.getMainFont());
-        model.addAttribute("imgUnderNickname", ImgUnderNickname.getAddressPicture());
+        model.addAttribute("imgUnderNickname", ImgUnderText.getAddressImgUnderNumber());
+        model.addAttribute("imgUnderStopwatch", ImgUnderText.getAddressImgUnderStopwatch());
         return "stopwatch";
     }
 
@@ -40,6 +41,7 @@ public class MainController {
     public String switchMapPage(Model model, Principal principal) {
         model.addAttribute("font", fontService.getMainFont());
         model.addAttribute("maps", pictureService.findAllMapPicture());
+        model.addAttribute("imgUnderSelectMap", ImgUnderText.getAddressImgUnderSelectMap());
         if (principal != null)
             model.addAttribute("user", userService.findUserByUsername(principal.getName()));
 

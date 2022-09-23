@@ -18,8 +18,7 @@
     <title>Title</title>
 </head>
 <body>
-<audio id="audio" type="audio/mpeg" th:src="@{{audioPath} (audioPath=${audioPath})}"
-       preload="auto"></audio>
+<audio id="audio" type="audio/mpeg" th:src="@{{audioPath} (audioPath=${audioPath})}" preload=auto></audio>
 <div class="hidden" th:insert="fragments/nav :: nav"></div>
 <div class="container w-100" id="container">
     <table th:style="'position: fixed; top: 32vh; left: 4vw;text-align: center;color:' + ${font.color} + ';'">
@@ -30,15 +29,22 @@
         </tr>
         <tr>
             <td colspan="3">
-                <img style="max-width:15vw;position: relative;top: -4.9vw;z-index: -1"
-                     th:src="@{{img} (img = ${imgUnderNickname})}">
+                <img th:style="'max-width:15vw;position: relative;top:' +  ${imgUnderNickname[1]} + ';z-index: -1'"
+                     th:src="@{{img} (img = ${imgUnderNickname[0]})}">
             </td>
         </tr>
     </table>
-    <div style="position: fixed; right: 4vw; top: 64vh">
+    <div style="position: fixed; right: 4vw; top: 53vh">
         <table style="text-align: center">
 
             <thead>
+            <tr>
+                <td></td>
+                <td colspan="3">
+                    <img th:style="'max-width:13vw;position: relative;top:' +  ${imgUnderStopwatch[1]} + ';z-index: -1'"
+                         th:src="@{{img} (img = ${imgUnderStopwatch[0]})}">
+                </td>
+            </tr>
             <tr id="number">
                 <td></td>
                 <td style=";font-size: 50px" id="second">00</td>
@@ -46,7 +52,7 @@
                 <td style=";font-size: 50px" id="millisecond">00</td>
             </tr>
             </thead>
-            <tbody sec:authorize="hasAuthority('ADMIN')"  class="hidden">
+            <tbody sec:authorize="hasAuthority('ADMIN')" class="hidden">
             <tr>
                 <td>
                     <button class="btn btn-sm btn-outline-warning" id="button stop confirmation" style="display: none"
@@ -77,17 +83,19 @@
                 <td></td>
                 <td colspan="3">
                     <div class="d-grid">
-                        <button class="btn btn-sm btn-outline-warning" th:onclick="'sendResultPlayer(' + ${player.id} + ')'" th:text="${player.nickname}"></button>
+                        <button class="btn btn-sm btn-outline-warning"
+                                th:onclick="'sendResultPlayer(' + ${player.id} + ')'"
+                                th:text="${player.nickname}"></button>
                     </div>
                 </td>
             </tr>
             </tbody>
-           </table>
+        </table>
     </div>
 </div>
 <script type="text/javascript" th:src="@{/js/font.js}"></script>
 <script sec:authorize="!hasAuthority('ADMIN')" type="text/javascript" th:src="@{/js/stopwatchForAll.js}"></script>
-<script sec:authorize="hasAuthority('ADMIN')" type="text/javascript" th:src="@{/js/stopwatch.js}"></script>
+<script sec:authorize="hasAuthority('ADMIN')" type="text/javascript" th:src="@{/js/stopwatchForAdmin.js}"></script>
 <script type="text/javascript" th:src="@{/js/updateDataStopwatch.js}"></script>
 </body>
 </html>

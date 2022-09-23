@@ -46,6 +46,6 @@ function fontNumbers(){
         '              color: ' + color + '}';
     document.getElementsByTagName('head')[0].appendChild(style);
 
-    document.getElementById('number').className = 'font_numbers';
+    document.getElementById('number').className = 'font_numbers fs-4';
 }
 

@@ -10,8 +10,7 @@ import com.vladislavgoncharov.overlayforcounttimebeforedead.mapper.MapPictureMap
 import com.vladislavgoncharov.overlayforcounttimebeforedead.repository.MapPictureRepository;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.repository.UserRepository;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.service.PictureService;
-import com.vladislavgoncharov.overlayforcounttimebeforedead.util.ImgUnderNickname;
-import com.vladislavgoncharov.overlayforcounttimebeforedead.util.ImgUnderSelectMap;
+import com.vladislavgoncharov.overlayforcounttimebeforedead.util.ImgUnderText;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,18 +98,23 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public List<String> getOthersPictures() {
-        return List.of(ImgUnderNickname.getAddressPicture(),ImgUnderSelectMap.getAddressPicture());
-    }
-
-    @Override
-    public void saveOthersPictures(MultipartFile othersPictures) throws IOException {
-        ImgUnderNickname.setAddressPicture(savePictureInCloudinary(othersPictures));
-    }
-
-    @Override
-    public void saveSelectMapPicture(MultipartFile selectMapPicture) throws IOException {
-        ImgUnderSelectMap.setAddressPicture(savePictureInCloudinary(selectMapPicture));
+    public void saveOthersPictures(Integer idPicture, MultipartFile picture) throws IOException {
+        String addressImg = savePictureInCloudinary(picture);
+        switch (idPicture){
+            case 1:{
+                ImgUnderText.setAddressImgUnderNumber(addressImg);
+                break;
+            }
+            case 2: {
+                ImgUnderText.setAddressImgUnderStopwatch(addressImg);
+                break;
+            }
+            case 3: {
+                ImgUnderText.setAddressImgUnderSelectMap(addressImg);
+                break;
+            }
+            default: throw new IOException("Вы ошиблись, попробуйте еще раз");
+        }
     }
 
     private String savePictureInCloudinary(MultipartFile multipartFile) throws IOException {
