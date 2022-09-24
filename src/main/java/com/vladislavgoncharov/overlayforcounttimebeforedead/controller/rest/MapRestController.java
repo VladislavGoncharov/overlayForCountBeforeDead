@@ -1,5 +1,6 @@
 package com.vladislavgoncharov.overlayforcounttimebeforedead.controller.rest;
 
+import com.vladislavgoncharov.overlayforcounttimebeforedead.entity.MapPicture;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.service.PictureService;
 import com.vladislavgoncharov.overlayforcounttimebeforedead.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -29,14 +30,14 @@ public class MapRestController {
         pictureService.mapSelect(idMap,idUser);
     }
 
-    @PostMapping("/get-name-of-player-by-map-id-{idMap}")
-    public ResponseEntity<String> mapBooking(@PathVariable("idMap") Long idMap) {
-        return new ResponseEntity<>(pictureService.getNameOfPlayerByMapId(idMap),HttpStatus.OK);
+    @PostMapping("/get-name-of-player-by-map-id-{sequenceNumber}")
+    public ResponseEntity<String> mapBooking(@PathVariable("sequenceNumber") Integer sequenceNumber) {
+        return new ResponseEntity<>(pictureService.getNameOfPlayerBySequenceNumber(sequenceNumber),HttpStatus.OK);
     }
 
-    @PostMapping("/get-all-is-selected")
-    public ResponseEntity<List<Boolean>> getMap() {
-        return new ResponseEntity<>(pictureService.getAllIsSelected(),HttpStatus.OK);
+    @PostMapping("/get-all-selected-and-name-player")
+    public ResponseEntity<List<MapPicture>> getAllMapSelectedAndNamePlayer() {
+        return new ResponseEntity<>(pictureService.getAllSelectedAndNamePlayer(),HttpStatus.OK);
     }
 
     @PostMapping("/is-reset-map")

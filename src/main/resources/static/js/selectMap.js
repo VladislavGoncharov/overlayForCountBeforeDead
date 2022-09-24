@@ -7,7 +7,6 @@ function selectMap(idMap, idUser) {
 }
 
 function getNameOfPlayerWhoChose(mapId) {
-    mapId++;
     let playerName = ""
     $.ajax({
         type: 'POST',
@@ -25,9 +24,10 @@ function getNameOfPlayerWhoChose(mapId) {
 let interval = setInterval(updateSelectMap, 300)
 
 function updateSelectMap() {
+
     $.ajax({
         type: 'POST',
-        url: '/switch-map/get-all-is-selected',
+        url: '/switch-map/get-all-selected-and-name-player',
         async: false,
         success: function (request) {
             const arrayIsSelected = request;
@@ -40,9 +40,9 @@ function updateSelectMap() {
                 playerNameWhoChooseMap.style.opacity = '1';
 
 
-                if (arrayIsSelected[i]) {
+                if (arrayIsSelected[i].selected) {
                     mapSelect.style.opacity = '1';
-                    playerNameWhoChooseMap.innerText = getNameOfPlayerWhoChose(i);
+                    playerNameWhoChooseMap.innerText = arrayIsSelected[i].nameOfPlayerWhoChose;
                     playerNameWhoChooseMap.style.opacity = '1';
 
                     numberOfSelected++;
@@ -55,7 +55,7 @@ function updateSelectMap() {
 
             if (++numberOfSelected === arrayIsSelected.length) {
                 for (let i = 0; i < arrayIsSelected.length; i++) {
-                    if (!arrayIsSelected[i]) {
+                    if (!arrayIsSelected[i].selected) {
                         document.getElementById('divSelect' + i).style.transform = ('scale(1.3)');
                         document.getElementById('map select player name ' + i).style.opacity = '0';
                     } else document.getElementById('divSelect' + i).style.transform = ('scale(0.8)');
@@ -78,7 +78,7 @@ function resetMap() {
 
                 $.ajax({
                     type: 'POST',
-                    url: '/switch-map/get-all-is-selected',
+                    url: '/switch-map/get-all-selected-and-name-player',
                     async: false,
                     success: function (request) {
                         for (let i = 0; i < request.length; i++) {

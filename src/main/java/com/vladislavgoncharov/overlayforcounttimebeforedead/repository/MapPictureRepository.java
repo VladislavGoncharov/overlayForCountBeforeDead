@@ -17,17 +17,16 @@ public interface MapPictureRepository extends JpaRepository<MapPicture, Long> {
             value = "update map_pictures set is_selected = true, name_of_player_who_chose = ?2 where id = ?1")
     void mapSelect(Long id, String username);
 
-    @Modifying
-    @Query(nativeQuery = true,value = "select is_selected from map_pictures")
-    List<Boolean> getAllIsSelected();
+    @Query(nativeQuery = true,value = "select is_selected, name_of_player_who_chose from map_pictures")
+    List<String[]> getAllSelectedAndNamePlayer();
 
     @Modifying
     @Query(nativeQuery = true,value = "update map_pictures set is_selected = false, name_of_player_who_chose = ''")
     void resetSelectedMap();
 
     @Query(nativeQuery = true,value = "select name_of_player_who_chose from map_pictures  where id = ?1")
-    String getNameOfPlayerByMapId(Long idMap);
+    String getNameOfPlayerByMapId(Integer idMap);
 
-    @Query(nativeQuery = true,value = "select (7 =  (select count(*) from map_pictures  where is_selected = false))")
-    boolean isResetMap();
+    @Query(nativeQuery = true,value = "select (?1 =  (select count(*) from map_pictures  where is_selected = false))")
+    boolean isResetMap(Long count);
 }

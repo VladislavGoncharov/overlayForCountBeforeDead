@@ -1,0 +1,7 @@
+version: "3.7"
+services:
+  app:
+    image: veyvik87/overlay-stopwatch:1.0
+    restart: always
+    ports:
+      - "80:80"

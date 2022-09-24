@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -63,8 +64,13 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public List<Boolean> getAllIsSelected() {
-        return mapPictureRepository.getAllIsSelected();
+    public List<MapPicture> getAllSelectedAndNamePlayer() {
+        return mapPictureRepository.getAllSelectedAndNamePlayer().stream()
+                .map(array -> MapPicture.builder()
+                        .isSelected(Boolean.parseBoolean(array[0]))
+                        .nameOfPlayerWhoChose(array[1])
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -88,13 +94,13 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public String getNameOfPlayerByMapId(Long idMap) {
-        return mapPictureRepository.getNameOfPlayerByMapId(idMap);
+    public String getNameOfPlayerBySequenceNumber(Integer sequenceNumber) {
+        return mapPictureRepository.getNameOfPlayerByMapId(sequenceNumber);
     }
 
     @Override
     public boolean isResetMap() {
-        return mapPictureRepository.isResetMap();
+        return mapPictureRepository.isResetMap(mapPictureRepository.count());
     }
 
     @Override

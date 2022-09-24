@@ -16,7 +16,7 @@ let second = 0,
     finalMillisecond,
     playerTime;
 
-let intervalStopwatch,intervalStartStopwatch;
+let intervalStopwatch, intervalStartStopwatch;
 
 function startStopwatch() {
     millisecond++;
@@ -49,14 +49,18 @@ startButton.addEventListener('click', () => {
 
     audio.play()
 
+    setTimeout(() => {
+        $.ajax({
+            type: 'POST',
+            url: 'stopwatch-start',
+            async: false,
+        });
+    }, 100)
+
+
     intervalStartStopwatch = setTimeout(() => {
         if (intervalStopwatch == null) {
             intervalStopwatch = setInterval(startStopwatch, 10);
-            $.ajax({
-                type: 'POST',
-                url: 'stopwatch-start',
-                async: false,
-            });
         }
     }, timeCutoff)
 
@@ -66,9 +70,7 @@ stopButton.addEventListener('click', () => {
 
     if (second === 0 && millisecond === 0) {
         resetButton.click()
-    }
-
-    else {
+    } else {
         finalSecond = second;
         finalMillisecond = millisecond;
 
@@ -92,11 +94,13 @@ resetButton.addEventListener('click', () => {
     intervalStartStopwatch = null
     resetToZero()
 
+
     $.ajax({
         type: 'POST',
         url: 'stopwatch-reset',
         async: false,
     });
+
 
     buttonSendResultPlayer1.style.display = 'none'
     buttonSendResultPlayer2.style.display = 'none'
@@ -148,8 +152,8 @@ function sendResultPlayer(playerId) {
 function audioStop() {
     audio.pause()
     audio.currentTime = 0
-
 }
+
 
 function resetToZero() {
     second = 0

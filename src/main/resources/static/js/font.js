@@ -42,7 +42,7 @@ function fontNumbers(){
     style.type = 'text/css';
     style.innerHTML = '@import url(' + fontAddress + ');\n' +
         '        .font_numbers {\n' +
-        '             font-family: ' + fontName  + '}\n' +
+        '             font-family: ' + fontName  + ';\n' +
         '              color: ' + color + '}';
     document.getElementsByTagName('head')[0].appendChild(style);
 

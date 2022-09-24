@@ -18,7 +18,8 @@
     <title>Title</title>
 </head>
 <body>
-<audio id="audio" type="audio/mpeg" th:src="@{{audioPath} (audioPath=${audioPath})}" preload=auto></audio>
+<iframe th:src="@{{audioPath} (audioPath=${audioPath})}" allow="autoplay" id="audio1" style="display: none"></iframe>
+<audio id="audio" type="audio/mpeg" th:src="@{{audioPath} (audioPath=${audioPath})}"  preload=auto></audio>
 <div class="hidden" th:insert="fragments/nav :: nav"></div>
 <div class="container w-100" id="container">
     <table th:style="'position: fixed; top: 32vh; left: 4vw;text-align: center;color:' + ${font.color} + ';'">

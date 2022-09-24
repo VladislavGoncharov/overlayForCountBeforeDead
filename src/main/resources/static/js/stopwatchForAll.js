@@ -1,10 +1,14 @@
 const secondElement = document.getElementById('second');
 const millisecondElement = document.getElementById('millisecond');
+const audio = document.getElementById('audio')
+audio.load()
 
 let second = 0,
     millisecond = 0
 
 let interval = null;
+let intervalStopwatchForAll = null;
+let intervalStartStopwatch = null;
 
 function start() {
     millisecond++;
@@ -21,8 +25,6 @@ function start() {
     else secondElement.innerText = "" + second;
 }
 
-let intervalStopwatchForAll
-
 nextStep()
 
 function nextStep() {
@@ -32,46 +34,72 @@ function nextStep() {
             url: 'does-stopwatch-work',
             async: false,
             success(request) {
-                if (request === 'START' && interval == null) startStopwatch();
+                console.log(request)
+                if (request === 'START' && intervalStartStopwatch == null) startStopwatch();
                 else if (request === 'STOP') stopStopwatch();
                 else if (request === 'RESET') resetStopwatch();
             }
         });
-    }, 100)
+    }, 80)
 }
 
 function startStopwatch() {
-    clearInterval(intervalStopwatchForAll)
-    clearInterval(interval)
+    resetStopwatch()
 
-    second = 0
-    millisecond = 0
+    let timeCutoff;
 
-    interval = setInterval(start, 10)
+    $.ajax({
+        type: 'POST',
+        url: 'get-time-cutoff-on-audio',
+        async: false,
+        success: function (request) {
+            timeCutoff = parseInt(request)
+        }
+    })
+
+    audio.play()
+
+    intervalStartStopwatch = setTimeout(() => {
+        if (interval == null) {
+            interval = setInterval(start, 10);
+        }
+    }, timeCutoff)
+
     intervalStopwatchForAll = setInterval(nextStep, 100)
-
 }
 
 function stopStopwatch() {
     clearInterval(interval)
     clearInterval(intervalStopwatchForAll)
+    clearTimeout(intervalStartStopwatch)
     innerTextResult()
 
     interval = null
-    nextStep()
+    intervalStopwatchForAll = null
+    intervalStartStopwatch = null
+
+    audioStop()
+
+    setTimeout(nextStep, 100)
 }
 
 function resetStopwatch() {
     clearInterval(interval)
     clearInterval(intervalStopwatchForAll)
+    clearTimeout(intervalStartStopwatch)
 
+    second = 0
+    millisecond = 0
     secondElement.innerText = "00";
     millisecondElement.innerText = "00";
 
     interval = null
-    nextStep()
-}
+    intervalStopwatchForAll = null
+    intervalStartStopwatch = null
 
+    audioStop()
+    setTimeout(nextStep, 100)
+}
 
 function innerTextResult() {
     $.ajax({
@@ -91,4 +119,9 @@ function innerTextResult() {
 
     if (millisecond < 10) millisecond = "0" + millisecond;
     millisecondElement.innerText = "" + millisecond;
+}
+
+function audioStop() {
+    audio.pause()
+    audio.currentTime = 0
 }

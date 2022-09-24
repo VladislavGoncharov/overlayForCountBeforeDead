@@ -2,7 +2,7 @@ package com.vladislavgoncharov.overlayforcounttimebeforedead.util;
 
 public class TimeCutoffOnAudio {
 
-    private static int timeCutoff = 6000;
+    private static int timeCutoff = 2000;
 
     public static int getTimeCutoff() {
         return timeCutoff;

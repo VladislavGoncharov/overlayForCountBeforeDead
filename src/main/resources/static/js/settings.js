@@ -62,6 +62,8 @@ function settingWidthOfButtons(){
 }
 
 function copyText(userId){
+    let copy = document.getElementById('copyText')
+
     $.ajax({
         type: 'POST',
         url: 'settings/get-user-data-by-id-' + userId,
@@ -69,7 +71,11 @@ function copyText(userId){
         success(request) {
             const result = request.split('&&')
 
-            navigator.clipboard.writeText('логин: ' + result[0] + '\nпароль: ' + result[1]);
+            copy.innerText = 'логин: ' + result[0] + ' пароль: ' + result[1]
+            copy.select()
+            document.execCommand('copy')
+            copy.blur()
+            copy.innerText = ''
         }
     });
 }

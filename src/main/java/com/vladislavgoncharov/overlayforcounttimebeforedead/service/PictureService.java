@@ -1,6 +1,7 @@
 package com.vladislavgoncharov.overlayforcounttimebeforedead.service;
 
 import com.vladislavgoncharov.overlayforcounttimebeforedead.dto.MapPictureDTO;
+import com.vladislavgoncharov.overlayforcounttimebeforedead.entity.MapPicture;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ public interface PictureService {
 
     void mapSelect(Long idMap, Long idUser);
 
-    List<Boolean> getAllIsSelected();
+    List<MapPicture> getAllSelectedAndNamePlayer();
 
     void resetSelectedMap();
 
@@ -19,7 +20,7 @@ public interface PictureService {
 
     void deleteMapPicture(Long id);
 
-    String getNameOfPlayerByMapId(Long idMap);
+    String getNameOfPlayerBySequenceNumber(Integer sequenceNumber);
 
     boolean isResetMap();
 
